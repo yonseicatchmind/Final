@@ -1,11 +1,15 @@
 package application;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -23,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
+
 public class SampleController implements Initializable {
 	
 	// variables 
@@ -31,7 +36,7 @@ public class SampleController implements Initializable {
     
 	 public GraphicsContext gcb, gcf; // canvas에 색 출력  gcf-canvas gcb-canvasef 
 	 public boolean freedesign = true, erase = false, drawline = false,
-			 drawoval = false,drawrectangle = false; //true false로 키고 끄기
+			 drawoval = false,drawrectangle = false, paintright = false; //true false로 키고 끄기
 	 double startX=0, startY=0, lastX=0,lastY=0,oldX=0,oldY=0,holdX=0,holdY=0;
 	 double hg;
 	 int strokeNow=5;
@@ -46,16 +51,18 @@ public class SampleController implements Initializable {
 	 double sliders=5,rsliders;
 	//Color.rgb(244,244,244); // 그림판 배경 색 
 	 int firstConnect=0;
+	 int score = 0;
 	 String Msg,temp;
 	 String fills="FillNo",rfills="FillNo";
 	 int playerNum=0;
-	 //int scores[] = {100, 100, 100, 100};
-	// String playerList[]= {"","","",""};
+	 List<String> list = new ArrayList<String>();
 	 String Id1;
 	 class Player {
 
+
 			String players[];
 			int scores[];
+
 
 		}
 	 
@@ -77,9 +84,6 @@ public class SampleController implements Initializable {
 	// public ListView PlayerList;
 	 public TextField ID,IP,Port;
 	 public String ans="";
-	 
-	
-	 
 	@FXML
 		public void onMousePressedListener(MouseEvent e){ //직선 및 도형 그릴 때 시작 끝 저장 
 			this.startX = e.getX();
@@ -91,7 +95,7 @@ public class SampleController implements Initializable {
 	        this.lastX = e.getX();
 	        this.lastY = e.getY();
 	        	// 드래그 할 때 함수들 호출 및 알고리즘 
-	     if (Ids.equals("teacher")) {
+	     if (paintright == true) {
 	        if(drawrectangle)
                 drawRectEffect();
 	        if(drawoval)
@@ -107,7 +111,7 @@ public class SampleController implements Initializable {
 	  @FXML 
 	    public void onMouseReleaseListener(MouseEvent e){ 
 		 
-		  if (Ids.equals("teacher")) {
+		  if (paintright == true) {
 	        if(drawrectangle)
 	            sendRect();
 	        if(drawoval)
@@ -140,7 +144,7 @@ public class SampleController implements Initializable {
 	
 	  public void sendPensil() // 마우스 이용 그리기  메소드 
 	    {
-		  if (Ids.equals("teacher")) {
+		  if (paintright == true) {
 	        gcb.setStroke(colorpick.getValue());
 	        colors=colorpick.getValue();
 	        colorS=colors.toString();
@@ -157,7 +161,7 @@ public class SampleController implements Initializable {
 	   
 	    private void sendRect() //사각형 그리는 메소드 
 	    {
-	    	 if (Ids.equals("teacher")) { 
+	    	if (paintright == true) { 
 	            gcb.setStroke(colorpick.getValue());
 	            colors=colorpick.getValue();
 	            colorS=colors.toString();
@@ -168,9 +172,10 @@ public class SampleController implements Initializable {
       
 	    }
 
+
 	    private void sendLine() //선 그리는 메소드 
 	    {	
-	    	 if (Ids.equals("teacher")) {
+	    	if (paintright == true) {
 	    	
 	        	gcb.setStroke(colorpick.getValue());
 	            colors=colorpick.getValue();
@@ -184,7 +189,7 @@ public class SampleController implements Initializable {
 	
 	  	private void sendOval() //타원 그리는 메소드 
 	    {
-	  		 if (Ids.equals("teacher")) {
+	  		if (paintright == true) {
 	            gcb.setStroke(colorpick.getValue());
 	            colors=colorpick.getValue();
 	            colorS=colors.toString();
@@ -194,9 +199,10 @@ public class SampleController implements Initializable {
 	        } 
 	    }
 
+
 	  	
 	  	 private void sendErase() { 
-	  		 if (Ids.equals("teacher")) { 
+	  		if (paintright == true) { 
 	  		    colors=Color.rgb(255,255,255);
 	  		    colorS=colors.toString();
 	  		    sliders=sizeSlider.getValue();
@@ -248,6 +254,7 @@ public class SampleController implements Initializable {
 	        }
 	    }
 
+
 	    private void drawLine() //선 그리는 메소드 
 	    {	
 	    	    gcb.setStroke(colorpick.getValue());
@@ -265,6 +272,7 @@ public class SampleController implements Initializable {
 	        gcb.setStroke(rcolors);
 	    	gcb.setLineWidth(rsliders);
 
+
 	        if(rfills.equals("FillYes")){
 	        	gcb.setFill(rcolors);   
 	        	gcf.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -274,6 +282,7 @@ public class SampleController implements Initializable {
 	            gcb.strokeOval(rX1, rY1, wh, hg);
 	        }
 	    }
+
 
 	    
 	   
@@ -292,6 +301,7 @@ public class SampleController implements Initializable {
 	        double hg = lastY - startY;
 	        gcf.setLineWidth(sizeSlider.getValue());
 
+
 	        if(fillRB.isSelected()){
 	            gcf.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	            gcf.setFill(colorpick.getValue());
@@ -307,11 +317,13 @@ public class SampleController implements Initializable {
 	        }
 	       }
 
+
 	    private void drawRectEffect()
 	    {
 	        double wh = lastX - startX;
 	        double hg = lastY - startY;
 	        gcf.setLineWidth(sizeSlider.getValue());
+
 
 	        if(fillRB.isSelected()){
 	            gcf.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -383,6 +395,7 @@ public class SampleController implements Initializable {
 	        gcb.setStroke(colorpick.getValue());
 	    }
 
+
 	     @FXML
 	    private void setLineAsCurrentShape(ActionEvent e)
 	    {
@@ -423,6 +436,7 @@ public class SampleController implements Initializable {
 	        freedesign= false;
 	       // gcb.setStroke(colorpick.getValue());
 	    }
+
 
 	    @FXML
 	    public void setFreeDesign(ActionEvent e)
@@ -696,44 +710,38 @@ public class SampleController implements Initializable {
 		                	   Platform.runLater(() -> {
 		                		   temp = message.substring(message.indexOf("]")+2,message.length());
 		                		   temp = temp.trim();
-		                		   
-		                		   
 		                		   if(message.contains("/q")) { 
-		                		      if (message.substring((message.indexOf("[")+1), message.indexOf("]")).equals("teacher")) { 
-		                			   send("["+message.substring((message.indexOf("[")+1), message.indexOf("]")) + "] 가 문제를 출제하였습니다.\n");
-
-		                			   ans=message.substring(message.lastIndexOf("q")+1, message.lastIndexOf("q")+4);
-		                			   ans=ans.trim();
-		                			   }
-		                		   }  else {
-
+		                			   paintright = true;
+		                			   TalkBoard.appendText("**********"+message.substring((message.indexOf("[")+1), message.indexOf("]")) + "가 문제를 출제하였습니다.**********\n");
+		                			   ans=message.substring(message.lastIndexOf("q")+1, message.length()-1);
+		                		   }
+		                		   else if(message.contains("Score_reset_kk"))
+		                			   {score=0;
+		                		   		paintright = false;}
+		                		   else
 		                			   TalkBoard.appendText(message);
-		                			   //Players.setText(null);
-		                			    //  send("Member:  " + Ids+" ");	
-		                		      
-		                		   }
-		                		   if(!temp.equals("") && ans.equals(temp)) {
-		                			   Id1=message.substring((message.indexOf("[")+1), message.indexOf("]"));
-		                			   send("**********"+Id1 + "가 정답을 맞췄습니다.**********\n");
+		                		   if(ans.equals(temp)) {
 		                			   ans="";
-		                			  // Players.setText(null);
-		                			   
-		                			 //  for (int i=0;i<=playerNum;i++) {
-		                			//	   if (Id1.equals(p.players[i])) p.scores[i]+=100;
-		                			//	   Players.appendText(p.players[i]+"   " +p.scores[i]  +"\n");
-		                			//   }
-		                			   
-		                			   
-		                			   
-		                			   
-			                		   //send("Connect:" + Ids);	
+		                			   list.add(message.substring(1, message.indexOf("]")));
+		                			   while(true) {
+		                				   if(list.contains(Ids)) {
+			                				   score++;
+			                				   list.remove(Ids);
+			                			   }
+		                				   else
+		                					   break;
+		                			   }
+		                			   TalkBoard.appendText("**********"+message.substring((message.indexOf("[")+1), message.indexOf("]")) + "(이)가 정답을 맞췄습니다.**********[당신의 현재 점수]"+score+"\n");
+		                			   TalkBoard.appendText("*********정답자는 /q제시어 를 입력해주세요**************");
+		                			   paintright = false;
+		                			   if(score>=3) {
+		                				   send("**********"+message.substring((message.indexOf("[")+1), message.indexOf("]")) + "의 승리**********\n");
+		                				   list.clear();
+		                				   send("**********점수를 초기화합니다**********\n");
+		                				   send("Score_reset_kk");
+		                			   }
 		                		   }
-		                		   
-		                		   
-		                		  
-		                	   
 		                       });
-		                    
 		                }
 		          
 		            } catch (Exception e) {
@@ -760,14 +768,6 @@ public class SampleController implements Initializable {
 		            }
 		        };
 		        thread1.start();
-		    }
-		 
-		    // 동작 메소드
-		  
-		 
-		
-		 
-	   
-
-	    
+		    }		 
+		    // 동작 메소드 
 }
