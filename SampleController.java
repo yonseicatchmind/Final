@@ -475,18 +475,7 @@ public class SampleController implements Initializable {
             EndConnect.setDisable(false);
             Talk.requestFocus();
         
-            if (Ids.equals("teacher")) { 
-            	Pencil.setVisible(true);
-            	oval.setVisible(true);
-            	line.setVisible(true);
-            	rect.setVisible(true);
-            	Clear.setVisible(true);
-            	Eraser.setVisible(true);
-            	colorpick.setVisible(true);
-            	sizeSlider.setVisible(true);
-            	//confirm.setVisible(true);
-            	fillRB.setVisible(true);
-            }
+            
             
                TalkBoard.appendText("<알림> "+ Ids +" 님이  입장하였습니다!!\n");
               // send("Connect:" + Ids+ " \n");	
@@ -712,6 +701,18 @@ public class SampleController implements Initializable {
 		                		   temp = temp.trim();
 		                		   if(message.contains("/q")) { 
 		                			   paintright = true;
+		                			   if (paintright == true) { 
+		                	            	Pencil.setVisible(true);
+		                	            	oval.setVisible(true);
+		                	            	line.setVisible(true);
+		                	            	rect.setVisible(true);
+		                	            	Clear.setVisible(true);
+		                	            	Eraser.setVisible(true);
+		                	            	colorpick.setVisible(true);
+		                	            	sizeSlider.setVisible(true);
+		                	            	//confirm.setVisible(true);
+		                	            	fillRB.setVisible(true);
+		                	            }
 		                			   TalkBoard.appendText("**********"+message.substring((message.indexOf("[")+1), message.indexOf("]")) + "가 문제를 출제하였습니다.**********\n");
 		                			   ans=message.substring(message.lastIndexOf("q")+1, message.length()-1);
 		                		   }
@@ -732,8 +733,20 @@ public class SampleController implements Initializable {
 		                					   break;
 		                			   }
 		                			   TalkBoard.appendText("**********"+message.substring((message.indexOf("[")+1), message.indexOf("]")) + "(이)가 정답을 맞췄습니다.**********[당신의 현재 점수]"+score+"\n");
-		                			   TalkBoard.appendText("*********정답자는 /q제시어 를 입력해주세요**************");
+		                			   TalkBoard.appendText("*********정답자는 /q제시어 를 입력해주세요**************\n");
 		                			   paintright = false;
+		                			   if (paintright == false) { 
+		                	            	Pencil.setVisible(false);
+		                	            	oval.setVisible(false);
+		                	            	line.setVisible(false);
+		                	            	rect.setVisible(false);
+		                	            	Clear.setVisible(false);
+		                	            	Eraser.setVisible(false);
+		                	            	colorpick.setVisible(false);
+		                	            	sizeSlider.setVisible(false);
+		                	            	//confirm.setVisible(true);
+		                	            	fillRB.setVisible(false);
+		                	            }
 		                			   if(score>=3) {
 		                				   send("**********"+message.substring((message.indexOf("[")+1), message.indexOf("]")) + "의 승리**********\n");
 		                				   list.clear();
