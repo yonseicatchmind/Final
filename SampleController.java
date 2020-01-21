@@ -700,19 +700,7 @@ public class SampleController implements Initializable {
 		                		   temp = message.substring(message.indexOf("]")+2,message.length());
 		                		   temp = temp.trim();
 		                		   if(message.contains("/q")) { 
-		                			   paintright = true;
-		                			   if (paintright == true) { 
-		                	            	Pencil.setVisible(true);
-		                	            	oval.setVisible(true);
-		                	            	line.setVisible(true);
-		                	            	rect.setVisible(true);
-		                	            	Clear.setVisible(true);
-		                	            	Eraser.setVisible(true);
-		                	            	colorpick.setVisible(true);
-		                	            	sizeSlider.setVisible(true);
-		                	            	//confirm.setVisible(true);
-		                	            	fillRB.setVisible(true);
-		                	            }
+		                			   
 		                			   TalkBoard.appendText("**********"+message.substring((message.indexOf("[")+1), message.indexOf("]")) + "가 문제를 출제하였습니다.**********\n");
 		                			   ans=message.substring(message.lastIndexOf("q")+1, message.length()-1);
 		                		   }
@@ -770,6 +758,21 @@ public class SampleController implements Initializable {
 		        Thread thread1 = new Thread() {
 		            public void run() {
 		                try {
+		                	if(message.contains("/q")){
+		                		paintright = true;
+		                		if (paintright == true) { 
+                	            	Pencil.setVisible(true);
+                	            	oval.setVisible(true);
+                	            	line.setVisible(true);
+                	            	rect.setVisible(true);
+                	            	Clear.setVisible(true);
+                	            	Eraser.setVisible(true);
+                	            	colorpick.setVisible(true);
+                	            	sizeSlider.setVisible(true);
+                	            	//confirm.setVisible(true);
+                	            	fillRB.setVisible(true);
+                	            }
+		                	}
 		                    OutputStream out = socket.getOutputStream();
 		                    byte[] buffer = message.getBytes("UTF-8");
 		                    out.write(buffer);
